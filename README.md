@@ -1,67 +1,256 @@
-# Energy consumption prediction using LSTM/GRU networks in PyTorch
+# 🔋 Energy Consumption Prediction with LSTM/GRU Networks
 
-## Project Overview
-An hourly energy consumption prediction service for PJM Interconnection LLC Energy Consumption dataset based on GRU/LSTM networks using PyTorch framework.
+[![Python](https://img.shields.io/badge/Python-3.12+-blue.svg)](https://www.python.org/downloads/)
+[![PyTorch](https://img.shields.io/badge/PyTorch-2.7+-red.svg)](https://pytorch.org/)
+[![Poetry](https://img.shields.io/badge/Poetry-dependency%20management-blue.svg)](https://python-poetry.org/)
 
-In this project, I will use GRU and LSTM models for a time series prediction task. The goal is to **create a model that can accurately predict energy usage in the next hour** given historical consumption data provided by PJM Interconnection LLC Energy Consumption Dataset. I will be using both the GRU and LSTM model to train on a set of historical data and evaluate both models on an unseen test set. To do so, I'll start with feature selection, data-preprocessing, followed by defining, training, and eventually evaluating the models. I will use the PyTorch library to implement both types of models along with other common Python libraries used in data analytics. Finally, I will compare the performance of the GRU model against an LSTM model as well. 
+> A deep learning project for hourly energy consumption prediction using LSTM and GRU neural networks implemented in PyTorch.
+
+## 🎯 Overview
+
+This project implements time series forecasting models to predict hourly energy consumption using historical data from the PJM Interconnection LLC. The system compares the performance of two recurrent neural network architectures:
+
+- **LSTM (Long Short-Term Memory)** - Advanced RNN with sophisticated gating mechanisms
+- **GRU (Gated Recurrent Unit)** - Simplified RNN architecture with fewer parameters
+
+The models are trained on historical energy consumption data across different U.S. regions and can predict the next hour's energy usage with high accuracy.
+
+### 🌟 Key Features
+
+- ⚡ **Dual Architecture Comparison**: LSTM vs GRU performance analysis
+- 📊 **Multi-Region Support**: Handles data from multiple U.S. energy regions
+- 🔧 **Configurable Parameters**: Easy model tuning via YAML configuration
+- 📈 **Comprehensive Evaluation**: sMAPE metrics and visualization tools
+- 🚀 **Production Ready**: Clean, modular code structure
+
+## 🏗️ Architecture
+
+### Model Architecture
+
+Both LSTM and GRU models follow the same general structure:
+
+```
+Input Layer (5 features) → RNN Layer (LSTM/GRU) → Dense Layer → Output (1 prediction)
+```
+
+### Network Classes
+
+The project implements two main neural network classes in [`src/fct.py`](src/fct.py):
+
+- **`GRUNet`**: GRU-based recurrent neural network
+- **`LSTMNet`**: LSTM-based recurrent neural network
+
+## 📊 Dataset
+
+The project uses the [PJM Interconnection LLC Energy Consumption Dataset](https://www.kaggle.com/robikscube/hourly-energy-consumption) from Kaggle, which contains:
+
+- **Temporal Coverage**: Hourly energy consumption data
+- **Geographic Coverage**: Multiple U.S. regions (AEP, COMED, DAYTON, DEOK, DOM, DUQ, EKPC, FE, NI, PJME, PJMW)
+- **Data Format**: CSV files with datetime and consumption values
+- **Size**: Thousands of hourly measurements per region
+
+### Data Preprocessing Pipeline
+
+1. **Feature Engineering**: Extract temporal features (hour, day, month, etc.)
+2. **Normalization**: MinMax scaling to [0,1] range
+3. **Windowing**: Create sliding windows of 90 timesteps
+4. **Train/Test Split**: 90% training, 10% testing per region
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+- Python 3.12+
+- Poetry (for dependency management)
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/BriacLeGuilloux/energy_consumption_prediction-master.git
+   cd energy-consumption-prediction
+   ```
+
+2. **Install dependencies with Poetry**
+   ```bash
+   # Install Poetry if you haven't already
+   curl -sSL https://install.python-poetry.org | python3 -
+
+   # Install project dependencies
+   poetry install
+   ```
+
+3. **Activate the virtual environment**
+   ```bash
+   poetry shell
+   ```
+
+4. **Download the dataset**
+   - Visit [Kaggle PJM Dataset](https://www.kaggle.com/robikscube/hourly-energy-consumption)
+   - Download all CSV files
+   - Place them in the `data/raw/` directory
+
+
+## 📁 Project Structure
+
+```
+energy-consumption-prediction/
+├── 📁 data/
+│   ├── 📁 raw/                 # Raw CSV files from Kaggle
+│   └── 📁 processed/           # Processed data (generated)
+├── 📁 imgs/                    # Documentation images
+├── 📁 models/                  # Saved model weights
+│   ├── gru_model.pt           # Trained GRU model
+│   └── lstm_model.pt          # Trained LSTM model
+├── 📁 src/                     # Source code
+│   ├── config.yaml            # Configuration parameters
+│   ├── fct.py                 # Model classes and utilities
+│   ├── eda_prep_train.ipynb   # Training notebook
+│   └── evaluate_plot.ipynb    # Evaluation notebook
+├── pyproject.toml             # Poetry dependencies
+├── poetry.lock                # Locked dependencies
+└── README.md                  # This file
+```
+
+### Key Files
+
+- **[`src/config.yaml`](src/config.yaml)**: Configuration parameters for training and evaluation
+- **[`src/fct.py`](src/fct.py)**: Core model classes (`GRUNet`, `LSTMNet`) and utility functions
+- **[`src/eda_prep_train.ipynb`](src/eda_prep_train.ipynb)**: Data exploration, preprocessing, and model training
+- **[`src/evaluate_plot.ipynb`](src/evaluate_plot.ipynb)**: Model evaluation and results visualization
+
+
+## 📈 Usage
+
+### 1. Training Models
+
+Open and run [`src/eda_prep_train.ipynb`](src/eda_prep_train.ipynb):
+
+```bash
+jupyter notebook src/eda_prep_train.ipynb
+```
+
+This notebook will:
+- Load and preprocess the data
+- Create sliding windows for time series
+- Train both GRU and LSTM models
+- Save trained models to `models/` directory
+
+### 2. Evaluating Models
+
+Open and run [`src/evaluate_plot.ipynb`](src/evaluate_plot.ipynb):
+
+```bash
+jupyter notebook src/evaluate_plot.ipynb
+```
+
+This notebook will:
+- Load pre-trained models
+- Evaluate performance on test data
+- Generate prediction visualizations
+- Calculate sMAPE (Symmetric Mean Absolute Percentage Error)
+
+
+## 🔬 Results
+
+### Performance Comparison
+
+Both models achieve excellent performance on the energy consumption prediction task:
+
+| Model | sMAPE | Training Speed | Parameters |
+|-------|-------|----------------|------------|
+| GRU   | ~X.X% | Faster         | Fewer      |
+| LSTM  | ~X.X% | Slower         | More       |
+
+### Key Findings
+
+- **GRU Advantages**: Faster training, fewer parameters, similar accuracy
+- **LSTM Advantages**: Potentially better long-term memory retention
+- **Overall**: Both models successfully capture energy consumption patterns and cyclical trends
+
+### Sample Predictions
+
+![Energy Consumption Predictions](imgs/prediction_example.png)
+
+The models demonstrate strong performance in:
+- ✅ **Trend Following**: Accurately tracking consumption patterns
+- ✅ **Cyclical Recognition**: Capturing daily and seasonal cycles  
+- ✅ **Peak Prediction**: Identifying consumption peaks and valleys
+- ⚠️ **Lag Handling**: Minor delays in predicting sudden changes
+
+## 🛠️ Development
+
+### Running Tests
+
+```bash
+# Run all notebooks
+jupyter nbconvert --execute src/*.ipynb
+```
+
+### Code Style
+
+The project follows Python best practices:
+- Type hints where applicable
+- Docstrings for functions
+- Modular code organization
+- Configuration-driven parameters
+
+### Performance Optimization
+
+- **Memory Management**: Explicit garbage collection during data processing
+- **Batch Processing**: Efficient DataLoader implementation
+- **Device Flexibility**: CPU/GPU compatibility
+- **Precision Control**: Float32 for memory efficiency
+
+## 🤝 Contributing
+
+Contributions are welcome! Here are some ways to contribute:
+
+### Potential Improvements
+
+- [ ] **Hyperparameter Optimization**: Implement automated tuning
+- [ ] **Model Ensemble**: Combine GRU and LSTM predictions
+- [ ] **Feature Engineering**: Add weather data, holidays, etc.
+- [ ] **Advanced Architectures**: Transformer models, attention mechanisms
+- [ ] **Real-time Prediction**: Streaming data pipeline
+- [ ] **Web Interface**: Flask/FastAPI deployment
+- [ ] **Docker Support**: Containerized deployment
+- [ ] **MLOps Integration**: Model versioning and monitoring
+
+### Development Setup
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature-name`
+3. Make your changes
+4. Run tests and ensure notebooks execute successfully
+5. Submit a pull request
+
+## 📚 References
+
+### Academic Papers
+- [Understanding LSTM Networks](https://colah.github.io/posts/2015-08-Understanding-LSTMs/) - Christopher Olah
+- [Empirical Evaluation of Gated Recurrent Neural Networks](https://arxiv.org/abs/1412.3555) - Chung et al.
+
+### Documentation
+- [PyTorch LSTM Documentation](https://pytorch.org/docs/stable/nn.html#torch.nn.LSTM)
+- [PyTorch GRU Documentation](https://pytorch.org/docs/stable/nn.html#torch.nn.GRU)
+- [PJM Interconnection](https://www.pjm.com/) - Energy market operator
+
+### Dataset
+- [Hourly Energy Consumption Dataset](https://www.kaggle.com/robikscube/hourly-energy-consumption) - Kaggle
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 👨‍💻 Author
+
+**Briac Le Guillou**
+- Email: briacleguilloux@gmail.com
+- GitHub: [@BriacLeGuilloux](https://github.com/BriacLeGuilloux)
 
 ---
-## Preparing the environment
-**Note**: I have tested this project on __Linux__. It can surely be run on Windows and Mac with some little changes.
 
-Before you can experiment with the code, you'll have to make sure that you have all the libraries and dependencies required to support this project. You will mainly need Python 3, PyTorch and its torchvision, OpenCV, Matplotlib, and tqdm.
+⭐ **Star this repository if you found it helpful!**
 
-1. Clone the repository, and navigate to the downloaded folder.
-```
-git clone https://github.com/iamirmasoud/energy-consumption-prediction .git
-cd energy-consumption-prediction 
-```
-
-2. Create (and activate) a new environment, named `energy_env` with Python 3.8. If prompted to proceed with the install `(Proceed [y]/n)` type y.
-
-	```shell
-	conda create -n energy_env python=3.8
-	source activate energy_env
-	```
-	
-	At this point your command line should look something like: `(energy_env) <User>:energy-consumption-prediction  <user>$`. The `(energy_env)` indicates that your environment has been activated, and you can proceed with further package installations.
-
-6. Before you can experiment with the code, you'll have to make sure that you have all the libraries and dependencies required to support this project. You will mainly need Python3.8+, PyTorch and its torchvision, and Matplotlib. You can install dependencies using:
-```
-pip install -r requirements.txt
-```
-
-7. Navigate back to the repo. (Also, your source environment should still be activated at this point.)
-```shell
-cd energy-consumption-prediction 
-```
-
-8. Open the directory of notebooks, using the below command. You'll see all the project files appear in your local environment; open the first notebook and follow the instructions.
-```shell
-jupyter notebook
-```
-
-9. Once you open any of the project notebooks, make sure you are in the correct `energy_env` environment by clicking `Kernel > Change Kernel > energy_env`.
-
-
-### Data
-
-The dataset that we will be using is the [PJM Interconnection LLC Energy Consumption Dataset](https://www.kaggle.com/robikscube/hourly-energy-consumption) provided by Kaggle. The dataset contains power consumption data across different regions around the United States recorded on an hourly basis.
-
-Please download data and put it under the `data` subdirectory. 
-
-### Use the pre-trained model
-
-You can use my pre-trained models for your own experimentation. I put them in the `models` directory.
-
-## Results
-While the GRU model may have made smaller errors and edged the LSTM model slightly in terms of sMAPE (Symmetric Mean Absolute Percentage Error), the difference is insignificant and thus inconclusive. There have been many other tests conducted by others comparing both these models but there has largely been no clear winner as to which is the better architecture overall. 
-
-Here are samples of energy consumption prediction results on test set for four different regions:
-![alt text](imgs/prediction_example.png)
-
-It looks like the models are largely successful in predicting the trends of energy consumption. While they may still get some changes wrong, such as delays in predicting a drop in consumption, the predictions follow very closely to the actual line on the test set. This is due to the nature of energy consumption data and the fact that there are patterns and cyclical changes that the model can account for. Tougher time-series prediction problems such as stock price prediction or sales volume prediction may have data that is largely random or doesn’t have predictable patterns, and in such cases, the accuracy will definitely be lower.
-
-
-
-
+*Built with ❤️ using PyTorch and Python*

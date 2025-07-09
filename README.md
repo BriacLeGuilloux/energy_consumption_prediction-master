@@ -161,11 +161,12 @@ Both models achieve excellent performance on the energy consumption prediction t
 
 | Model | sMAPE | Training Speed | Parameters |
 |-------|-------|----------------|------------|
-| GRU   | 0.541 | 11s            | Fewer      |
-| LSTM  | 0.352 | 19s            | More       |
+| GRU   | 0.329 | 5342s          | Fewer      |
+| LSTM  | 0.332 | 4667s          | More       |
 
 
-
+Evaluation Time: 39.11 seconds
+sMAPE: 0.3319999873638153%
 ### Key Findings
 
 - **GRU Advantages**: Faster training, fewer parameters, similar accuracy

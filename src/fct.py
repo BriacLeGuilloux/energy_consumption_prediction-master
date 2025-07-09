@@ -1,6 +1,7 @@
 import numpy as np
 import torch
 import torch.nn as nn
+import time
 
 def move_sliding_window(data, window_size, inputs_cols_indices, label_col_index):
     """
@@ -78,3 +79,47 @@ class LSTMNet(nn.Module):
         )
         return hidden
 
+
+
+def sMAPE(outputs, targets):
+    sMAPE = (
+        100
+        / len(targets)
+        * np.sum(np.abs(outputs - targets) / (np.abs(outputs + targets)) / 2)
+    )
+    return sMAPE
+
+
+def evaluate(model, test_x, test_y, label_scalers):
+    model.eval()  # Set model to evaluation mode
+    outputs, targets = [], []
+    start_time = time.process_time()
+
+    for state in test_x:  # Loop through each state's test data
+        # Convert input and target data to tensors
+        x = torch.tensor(test_x[state], dtype=torch.float32).to(device)
+        y = torch.tensor(test_y[state], dtype=torch.float32)
+
+        # Initialize hidden state
+        h = model.init_hidden(x.size(0))
+
+        # Forward pass without gradient computation
+        with torch.no_grad():
+            pred, _ = model(x, h)
+
+        # Inverse transform to get values in original scale
+        y_pred = label_scalers[state].inverse_transform(pred.cpu().numpy()).ravel()
+        y_true = label_scalers[state].inverse_transform(y.numpy()).ravel()
+
+        outputs.append(y_pred)
+        targets.append(y_true)
+
+    # Concatenate all predictions and targets
+    all_preds = np.concatenate(outputs)
+    all_truths = np.concatenate(targets)
+
+    # Print evaluation metrics
+    print(f"Evaluation Time: {time.process_time() - start_time:.2f} seconds")
+    print(f"sMAPE: {round(sMAPE(all_preds, all_truths), 3)}%")
+
+    return outputs, targets, sMAPE(all_preds, all_truths)

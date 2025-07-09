@@ -49,6 +49,8 @@ The project uses the [PJM Interconnection LLC Energy Consumption Dataset](https:
 - **Data Format**: CSV files with datetime and consumption values
 - **Size**: Thousands of hourly measurements per region
 
+![Time Series](imgs/time_series.png)
+
 ### Data Preprocessing Pipeline
 
 1. **Feature Engineering**: Extract temporal features (hour, day, month, etc.)
@@ -172,7 +174,7 @@ Both models achieve excellent performance on the energy consumption prediction t
 
 ### Sample Predictions
 
-![Energy Consumption Predictions](imgs/prediction_example.png)
+![Energy Consumption Predictions](imgs/prediction_last.png)
 
 The models demonstrate strong performance in:
 - ✅ **Trend Following**: Accurately tracking consumption patterns
@@ -195,14 +197,10 @@ The models demonstrate strong performance in:
 ### Dataset
 - [Hourly Energy Consumption Dataset](https://www.kaggle.com/robikscube/hourly-energy-consumption) - Kaggle
 
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 👨‍💻 Author
 
 **Briac Le Guillou**
-- Email: briacleguilloux@gmail.com
 - GitHub: [@BriacLeGuilloux](https://github.com/BriacLeGuilloux)
 
 ---

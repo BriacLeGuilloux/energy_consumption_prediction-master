@@ -1,5 +1,11 @@
-data_dir: "data/raw"
-label_col_index: 0
-inputs_cols_indices: [0, 1, 2, 3, 4]
-window_size: 90
-num_files_for_dataset: 5
+label_col_index: 0        # index de la colonne label
+inputs_cols_indices: [0, 1, 2, 3, 4]  # indices des colonnes utilisées comme features
+window_size: 90          # taille de la fenêtre glissante
+num_files_for_dataset: 5 # nombre de fichiers à traiter
+
+# Paramètres pour l'entraînement
+n_hidden: 256
+n_layers: 2
+n_epochs: 2
+print_every: 100
+lr: 0.001

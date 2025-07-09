@@ -1,3 +1,5 @@
+import numpy as np
+import torch.nn as nn
 
 def move_sliding_window(data, window_size, inputs_cols_indices, label_col_index):
     """
@@ -18,3 +20,8 @@ def move_sliding_window(data, window_size, inputs_cols_indices, label_col_index)
     print(inputs.shape, labels.shape)
 
     return inputs, labels
+
+
+
+    
+

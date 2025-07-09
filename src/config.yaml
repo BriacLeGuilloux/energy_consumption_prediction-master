@@ -1,0 +1,5 @@
+data_dir: "data/raw"
+label_col_index: 0
+inputs_cols_indices: [0, 1, 2, 3, 4]
+window_size: 90
+num_files_for_dataset: 5

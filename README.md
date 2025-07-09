@@ -159,8 +159,10 @@ Both models achieve excellent performance on the energy consumption prediction t
 
 | Model | sMAPE | Training Speed | Parameters |
 |-------|-------|----------------|------------|
-| GRU   | ~X.X% | Faster         | Fewer      |
-| LSTM  | ~X.X% | Slower         | More       |
+| GRU   | 0.541 | 11s            | Fewer      |
+| LSTM  | 0.352 | 19s            | More       |
+
+
 
 ### Key Findings
 
@@ -178,52 +180,6 @@ The models demonstrate strong performance in:
 - ✅ **Peak Prediction**: Identifying consumption peaks and valleys
 - ⚠️ **Lag Handling**: Minor delays in predicting sudden changes
 
-## 🛠️ Development
-
-### Running Tests
-
-```bash
-# Run all notebooks
-jupyter nbconvert --execute src/*.ipynb
-```
-
-### Code Style
-
-The project follows Python best practices:
-- Type hints where applicable
-- Docstrings for functions
-- Modular code organization
-- Configuration-driven parameters
-
-### Performance Optimization
-
-- **Memory Management**: Explicit garbage collection during data processing
-- **Batch Processing**: Efficient DataLoader implementation
-- **Device Flexibility**: CPU/GPU compatibility
-- **Precision Control**: Float32 for memory efficiency
-
-## 🤝 Contributing
-
-Contributions are welcome! Here are some ways to contribute:
-
-### Potential Improvements
-
-- [ ] **Hyperparameter Optimization**: Implement automated tuning
-- [ ] **Model Ensemble**: Combine GRU and LSTM predictions
-- [ ] **Feature Engineering**: Add weather data, holidays, etc.
-- [ ] **Advanced Architectures**: Transformer models, attention mechanisms
-- [ ] **Real-time Prediction**: Streaming data pipeline
-- [ ] **Web Interface**: Flask/FastAPI deployment
-- [ ] **Docker Support**: Containerized deployment
-- [ ] **MLOps Integration**: Model versioning and monitoring
-
-### Development Setup
-
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature-name`
-3. Make your changes
-4. Run tests and ensure notebooks execute successfully
-5. Submit a pull request
 
 ## 📚 References
 
